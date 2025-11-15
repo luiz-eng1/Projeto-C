@@ -53,6 +53,7 @@ struct Quarto quartos[100];
 
 //contadores    (para usar Ex. clientes[i].nome, acessando do indice teria que usar laço, ou criar um contador  <-)
 int ultimoCodigoCliente = 0;
+int ultimoCodigoFuncionario = 0;
 int qtdClientes = 0;
 int qtdFuncionarios = 0;
 int qtdQuartos = 0;
@@ -74,4 +75,24 @@ void CadastrarCliente(){
 
     ultimoCodigoCliente++;
     clientes[qtdClientes].idCliente == ultimoCodigoCliente;
+};
+
+
+void CadastrarFuncionario(){
+
+    printf("Nome do Funcionario: ");
+    fgets(funcionarios[qtdFuncionarios].nome, 50, stdin);
+
+    printf("Telefone do Funcionario: ");
+    fgets(funcionarios[qtdFuncionarios].telefone, 20, stdin);
+
+    printf("Cargo do Funcionario: ");
+    fgets(funcionarios[qtdFuncionarios].cargo, 20 , stdin);
+
+    printf("Salario do Funcionario: ");
+    scanf("%f", &funcionarios[qtdFuncionarios].salario);
+
+    ultimoCodigoFuncionario++;
+    funcionarios[qtdFuncionarios].idFuncionario == ultimoCodigoFuncionario;
+    
 };
