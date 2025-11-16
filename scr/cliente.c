@@ -1,5 +1,5 @@
 #include "../include/cliente.h"
-
+//gerar codigo cliente
 int gerarCodigoCliente() {
     FILE *arq = fopen(ARQ_CLIENTES, "rb");
     if (!arq) return 1; // se não existe arquivo, começa em 1
@@ -14,7 +14,7 @@ int gerarCodigoCliente() {
     fclose(arq);
     return ultimoCodigo + 1;
 }
-
+//cadastrar cliente
 void cadastrarCliente() {
     FILE *arq = fopen(ARQ_CLIENTES, "ab");
     if (!arq) {
@@ -44,7 +44,7 @@ void cadastrarCliente() {
 
     printf("\nCliente cadastrado com sucesso! Codigo: %d\n", c.idCliente);
 }
-
+//listar clientes
 int buscarClientePorCodigo(int codigo, Cliente *resultado) {
     FILE *arq = fopen(ARQ_CLIENTES, "rb");
     if (!arq) return 0;
@@ -62,7 +62,7 @@ int buscarClientePorCodigo(int codigo, Cliente *resultado) {
     fclose(arq);
     return 0;
 }
-
+//buscar cliente por nome
 void buscarClientePorNome(char *nome) {
     FILE *arq = fopen(ARQ_CLIENTES, "rb");
     if (!arq) {
@@ -87,7 +87,7 @@ void buscarClientePorNome(char *nome) {
 
     fclose(arq);
 }
-
+//exibir cliente
 void exibirCliente(Cliente c) {
     printf("\n-----------------------------\n");
     printf("Codigo: %d\n", c.idCliente);

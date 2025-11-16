@@ -1,5 +1,5 @@
 #include "../include/quarto.h"
-
+//buscar quarto por numero
 int buscarQuartoPorNumero(int numero, Quarto *q) {
     FILE *arq = fopen(ARQ_QUARTOS, "rb");
     if (!arq) return 0;
@@ -16,7 +16,7 @@ int buscarQuartoPorNumero(int numero, Quarto *q) {
     fclose(arq);
     return 0;
 }
-
+//cadastrar quarto
 void cadastrarQuarto() {
     FILE *arq = fopen(ARQ_QUARTOS, "ab");
     if (!arq) {
@@ -92,7 +92,7 @@ void cadastrarQuarto() {
 
     printf("\nQuarto cadastrado com sucesso!\n");
 }
-
+//listar quartos
 void exibirQuarto(Quarto q) {
     printf("\n-----------------------------\n");
     printf("Número: %d\n", q.numero);
