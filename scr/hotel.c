@@ -1,5 +1,6 @@
 //Sistema Hotel Descanso Garantido  
 #include <stdio.h>
+#include <string.h>
 
 // structs
 struct Cliente{
@@ -41,7 +42,6 @@ struct Quarto{
     char status[20];
 };
 
-
 // criando o vetor de structs
 struct Cliente clientes[100];
 struct Funcionario funcionarios[100];
@@ -49,7 +49,11 @@ struct Data datas[100];
 struct Estadia estadias[100];
 struct Quarto quartos[100];
 
-
+//função essencial para limpar o buffer e evitar problemas com fgets após scanf
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 //contadores    (para usar Ex. clientes[i].nome, acessando do indice teria que usar laço, ou criar um contador  <-)
 int ultimoCodigoCliente = 0;
@@ -57,7 +61,6 @@ int ultimoCodigoFuncionario = 0;
 int qtdClientes = 0;
 int qtdFuncionarios = 0;
 int qtdQuartos = 0;
-
 
 
 // funções 
