@@ -18,9 +18,7 @@ int gerarCodigoCliente();
 
 void cadastrarCliente();
 
-int buscarClientePorId(int id, Cliente *c);
-
-void buscarClientePorNome(const char *nome);
+void pesquisarCliente();
 
 void exibirCliente(Cliente c);
 

@@ -45,47 +45,63 @@ void cadastrarCliente() {
     printf("\nCliente cadastrado com sucesso! Codigo: %d\n", c.idCliente);
 }
 
-int buscarClientePorCodigo(int codigo, Cliente *resultado) {
-    FILE *arq = fopen(ARQ_CLIENTES, "rb");
-    if (!arq) return 0;
-
-    Cliente c;
-
-    while (fread(&c, sizeof(Cliente), 1, arq)) {
-        if (c.idCliente == codigo) {
-            *resultado = c;
-            fclose(arq);
-            return 1;
-        }
-    }
-
-    fclose(arq);
-    return 0;
-}
-
-void buscarClientePorNome(char *nome) {
-    FILE *arq = fopen(ARQ_CLIENTES, "rb");
-    if (!arq) {
-        printf("Nenhum cliente cadastrado ainda.\n");
+void pesquisarCliente() {
+    FILE *arquivo = fopen("clientes.dat", "rb");
+    if (arquivo == NULL) {
+        printf("Erro: Nenhum banco de dados de clientes encontrado ou erro na abertura.\n");
         return;
     }
 
+    int opcao;
+    printf("\n--- Pesquisar Cliente ---\n");
+    printf("1. Buscar por Codigo\n");
+    printf("2. Buscar por Nome\n");
+    printf("Opcao: ");
+    scanf("%d", &opcao);
+
     Cliente c;
-    int encontrou = 0;
+    int encontrado = 0;
 
-    printf("\nResultados da busca por nome \"%s\":\n", nome);
+    if (opcao == 1) {
+        int codigoBusca;
+        printf("Digite o codigo do cliente: ");
+        scanf("%d", &codigoBusca);
 
-    while (fread(&c, sizeof(Cliente), 1, arq)) {
-        if (strstr(c.nome, nome) != NULL) {
-            exibirCliente(c);
-            encontrou = 1;
+        while(fread(&c, sizeof(Cliente), 1, arquivo)) {
+            if(c.idCliente == codigoBusca) {
+                printf("\n>> Cliente Encontrado:\n");
+                printf("Codigo: %d\nNome: %s\nTelefone: %s\nEndereco: %s\n", 
+                       c.idCliente, c.nome, c.telefone, c.endereco);
+                encontrado = 1;
+                break; 
+            }
         }
+    } 
+    else if (opcao == 2) {
+        char nomeBusca[100];
+        printf("Digite o nome (ou parte dele): ");
+        getchar(); 
+        fgets(nomeBusca, 100, stdin);
+        nomeBusca[strcspn(nomeBusca, "\n")] = 0;
+
+        printf("\n>> Resultados da Busca:\n");
+        while(fread(&c, sizeof(Cliente), 1, arquivo)) {
+
+            if(strstr(c.nome, nomeBusca) != NULL) {
+                printf("-----------------------------\n");
+                printf("Codigo: %d\nNome: %s\nTelefone: %s\n", c.idCliente, c.nome, c.telefone);
+                encontrado = 1;
+            }
+        }
+    } else {
+        printf("Opcao invalida.\n");
     }
 
-    if (!encontrou)
-        printf("Nenhum cliente encontrado.\n");
+    if (!encontrado) {
+        printf("\nNenhum registro encontrado com esses dados.\n");
+    }
 
-    fclose(arq);
+    fclose(arquivo);
 }
 
 void exibirCliente(Cliente c) {
