@@ -20,5 +20,6 @@ int calcularDiarias(char entrada[], char saida[]);
 int verificarConflito(int numeroQuarto, char entrada[], char saida[]);
 void cadastrarEstadia();
 void finalizarEstadia();
+void darBaixaEstadia();
 
 #endif 

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../include/estadia.h"
+#include "../include/quarto.h" //liuzão vai precisar para dar baixa no quarto 
+
 
 int gerarCodigoEstadia(){
     FILE *arq = fopen(ARQ_ESTADIAS, "rb");
@@ -173,4 +175,7 @@ void finalizarEstadia(){
 
     printf("Estadia com ID %d finalizada com sucesso.\n", idEstadia);
     fclose(arq);
+}
+void darBaixaEstadia(){
+    //luizãooo, se não conseguir me chama
 }
