@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 // structs
 struct Cliente{
     int idCliente;
