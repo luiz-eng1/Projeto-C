@@ -49,7 +49,7 @@ void cadastrarQuarto() {
         return;
     }
 
-    // Capacidade
+    // capacidade
     printf("Capacidade de hóspedes: ");
     if (!fgets(buf, sizeof(buf), stdin)) {
         printf("Entrada inválida. Operação cancelada.\n");
@@ -63,7 +63,7 @@ void cadastrarQuarto() {
         return;
     }
 
-    // Valor da diária
+    // valor da diária
     printf("Valor da diária: ");
     if (!fgets(buf, sizeof(buf), stdin)) {
         printf("Entrada inválida. Operação cancelada.\n");
@@ -77,11 +77,11 @@ void cadastrarQuarto() {
         return;
     }
 
-    // Status seguro
+    // status seguro
     strncpy(q.status, "desocupado", sizeof(q.status) - 1);
     q.status[sizeof(q.status) - 1] = '\0';
 
-    // Grava e verifica escrita
+    // grava e verifica escrita
     size_t wrote = fwrite(&q, sizeof(Quarto), 1, arq);
     if (wrote != 1) {
         perror("Erro ao gravar quarto");
