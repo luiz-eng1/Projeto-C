@@ -93,6 +93,21 @@ void cadastrarQuarto() {
     printf("\nQuarto cadastrado com sucesso!\n");
 }
 
+
+// necessario para rodar a função "dar baixa estadia"
+float buscarValorDiaria(int numeroQuarto) {
+    Quarto q;
+
+    // Se encontrar o quarto, devolve o valor da diária
+    if (buscarQuartoPorNumero(numeroQuarto, &q)) {
+        return q.valorDiaria;
+    }
+
+    // Caso não ache o quarto, retorna um valor inválido
+    return -1.0f;
+}
+
+
 void exibirQuarto(Quarto q) {
     printf("\n-----------------------------\n");
     printf("Número: %d\n", q.numero);

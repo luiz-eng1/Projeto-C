@@ -177,5 +177,54 @@ void finalizarEstadia(){
     fclose(arq);
 }
 void darBaixaEstadia(){
-    //luizãooo, se não conseguir me chama
+    int idEstadia;
+    printf("Digite o ID da estadia para dar baixa: ");
+    if (scanf("%d", &idEstadia) != 1) {
+        printf("ID inválido.\n");
+        return;
+    }
+
+    FILE *arq = fopen(ARQ_ESTADIAS, "r+b");
+    if (!arq) {
+        printf("Erro ao abrir o arquivo de estadias.\n");
+        return;
+    }
+
+    Estadia temp;
+    int achou = 0;
+    long posicao = 0;
+
+    // procurar a estadia no arquivo
+    while (fread(&temp, sizeof(Estadia), 1, arq)) {
+        if (temp.idEstadia == idEstadia) {
+            achou = 1;
+            break;
+        }
+        posicao++;
+    }
+
+    if (!achou) {
+        printf("Estadia com ID %d não encontrada.\n", idEstadia);
+        fclose(arq);
+        return;
+    }
+
+    // calcular valor total
+    float valorDiaria = buscarValorDiaria(temp.numeroQuarto); // eu(luiz) criei no quarto.c
+    float total = temp.qtdDiarias * valorDiaria;
+
+    printf("\n=============================\n");
+    printf("   BAIXA DE ESTADIA\n");
+    printf("=============================\n");
+    printf("ID Estadia: %d\n", temp.idEstadia);
+    printf("Quarto: %d\n", temp.numeroQuarto);
+    printf("Diárias: %d\n", temp.qtdDiarias);
+    printf("Valor da diária: %.2f\n", valorDiaria);
+    printf("TOTAL A PAGAR: R$ %.2f\n", total);
+    printf("=============================\n\n");
+
+    // alterar o status do quarto para desocupado
+    atualizarStatusQuarto(temp.numeroQuarto, 1);
+
+    fclose(arq);
 }
