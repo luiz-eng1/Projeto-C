@@ -228,3 +228,85 @@ void darBaixaEstadia(){
 
     fclose(arq);
 }
+
+
+void listarEstadiasDeUmCliente() {
+    int opcao;
+    int idCliente = -1;
+    char nomeBuscado[50];
+
+    printf("\n--- LISTAR ESTADIAS DE UM CLIENTE ---\n");
+    printf("Pesquisar por:\n");
+    printf("1 - Código do cliente\n");
+    printf("2 - Nome do cliente\n");
+    printf("Escolha: ");
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        printf("Digite o código do cliente: ");
+        scanf("%d", &idCliente);
+
+        if (!buscarClientePorId(idCliente)) {
+            printf("Cliente não encontrado.\n");
+            return;
+        }
+
+    } else if (opcao == 2) {
+        getchar(); // limpar buffer
+        printf("Digite o nome do cliente: ");
+        fgets(nomeBuscado, 50, stdin);
+        nomeBuscado[strcspn(nomeBuscado, "\n")] = '\0';
+
+        idCliente = buscarClientePorNome(nomeBuscado);
+        if (idCliente == -1) {
+            printf("Nenhum cliente com esse nome foi encontrado.\n");
+            return;
+        }
+
+    } else {
+        printf("Opção inválida.\n");
+        return;
+    }
+
+    FILE *arq = fopen(ARQ_ESTADIAS, "rb");
+    if (!arq) {
+        printf("Erro ao abrir arquivo de estadias.\n");
+        return;
+    }
+
+    Estadia temp;
+    int encontrou = 0;
+
+    printf("\n===== ESTADIAS DO CLIENTE =====\n");
+
+    while (fread(&temp, sizeof(Estadia), 1, arq)) {
+        if (temp.idCliente == idCliente) {
+            encontrou = 1;
+
+            printf("\nID Estadia: %d\n", temp.idEstadia);
+            printf("Quarto: %d\n", temp.numeroQuarto);
+            printf("Entrada: %s\n", temp.dataEntrada);
+            printf("Saída: %s\n", temp.dataSaida);
+            printf("Diárias: %d\n", temp.qtdDiarias);
+
+            // verificar se a estadia está ativa ou encerrada
+            Quarto q;
+            if (buscarQuartoPorNumero(temp.numeroQuarto, &q)) {
+                if (strcmp(q.status, "ocupado") == 0)
+                    printf("Status: ATIVA\n");
+                else
+                    printf("Status: ENCERRADA\n");
+            } else {
+                printf("Status: (erro ao buscar quarto)\n");
+            }
+
+            printf("------------------------------\n");
+        }
+    }
+
+    if (!encontrou) {
+        printf("Nenhuma estadia encontrada para esse cliente.\n");
+    }
+
+    fclose(arq);
+}
