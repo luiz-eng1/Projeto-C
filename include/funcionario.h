@@ -14,5 +14,7 @@ typedef struct {
 int gerarCodigoFuncionario();
 void cadastrarFuncionario();
 void listarFuncionarios();
+void pesquisarFuncionarioPorCodigo();
+void pesquisarFuncionarioPorNome();
 
 #endif
