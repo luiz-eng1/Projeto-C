@@ -177,5 +177,208 @@ void finalizarEstadia(){
     fclose(arq);
 }
 void darBaixaEstadia(){
-    //luizãooo, se não conseguir me chama
+    int idEstadia;
+    printf("Digite o ID da estadia para dar baixa: ");
+    if (scanf("%d", &idEstadia) != 1) {
+        printf("ID inválido.\n");
+        return;
+    }
+
+    FILE *arq = fopen(ARQ_ESTADIAS, "r+b");
+    if (!arq) {
+        printf("Erro ao abrir o arquivo de estadias.\n");
+        return;
+    }
+
+    Estadia temp;
+    int achou = 0;
+    long posicao = 0;
+
+    // procurar a estadia no arquivo
+    while (fread(&temp, sizeof(Estadia), 1, arq)) {
+        if (temp.idEstadia == idEstadia) {
+            achou = 1;
+            break;
+        }
+        posicao++;
+    }
+
+    if (!achou) {
+        printf("Estadia com ID %d não encontrada.\n", idEstadia);
+        fclose(arq);
+        return;
+    }
+
+    // calcular valor total
+    float valorDiaria = buscarValorDiaria(temp.numeroQuarto); // eu(luiz) já criei no quarto.c
+    float total = temp.qtdDiarias * valorDiaria;
+
+    printf("\n=============================\n");
+    printf("   BAIXA DE ESTADIA\n");
+    printf("=============================\n");
+    printf("ID Estadia: %d\n", temp.idEstadia);
+    printf("Quarto: %d\n", temp.numeroQuarto);
+    printf("Diárias: %d\n", temp.qtdDiarias);
+    printf("Valor da diária: %.2f\n", valorDiaria);
+    printf("TOTAL A PAGAR: R$ %.2f\n", total);
+    printf("=============================\n\n");
+
+    // alterar o status do quarto para desocupado
+    atualizarStatusQuarto(temp.numeroQuarto, 1);
+
+    fclose(arq);
+}
+
+
+void listarEstadiasDeUmCliente() {
+    int opcao;
+    int idCliente = -1;
+    char nomeBuscado[50];
+
+    printf("\n--- LISTAR ESTADIAS DE UM CLIENTE ---\n");
+    printf("Pesquisar por:\n");
+    printf("1 - Código do cliente\n");
+    printf("2 - Nome do cliente\n");
+    printf("Escolha: ");
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        printf("Digite o código do cliente: ");
+        scanf("%d", &idCliente);
+
+        if (!buscarClientePorId(idCliente)) {
+            printf("Cliente não encontrado.\n");
+            return;
+        }
+
+    } else if (opcao == 2) {
+        getchar(); // limpar buffer
+        printf("Digite o nome do cliente: ");
+        fgets(nomeBuscado, 50, stdin);
+        nomeBuscado[strcspn(nomeBuscado, "\n")] = '\0';
+
+        idCliente = buscarClientePorNome(nomeBuscado);
+        if (idCliente == -1) {
+            printf("Nenhum cliente com esse nome foi encontrado.\n");
+            return;
+        }
+
+    } else {
+        printf("Opção inválida.\n");
+        return;
+    }
+
+    FILE *arq = fopen(ARQ_ESTADIAS, "rb");
+    if (!arq) {
+        printf("Erro ao abrir arquivo de estadias.\n");
+        return;
+    }
+
+    Estadia temp;
+    int encontrou = 0;
+
+    printf("\n===== ESTADIAS DO CLIENTE =====\n");
+
+    while (fread(&temp, sizeof(Estadia), 1, arq)) {
+        if (temp.idCliente == idCliente) {
+            encontrou = 1;
+
+            printf("\nID Estadia: %d\n", temp.idEstadia);
+            printf("Quarto: %d\n", temp.numeroQuarto);
+            printf("Entrada: %s\n", temp.dataEntrada);
+            printf("Saída: %s\n", temp.dataSaida);
+            printf("Diárias: %d\n", temp.qtdDiarias);
+
+            // verificar se a estadia está ativa ou encerrada
+            Quarto q;
+            if (buscarQuartoPorNumero(temp.numeroQuarto, &q)) {
+                if (strcmp(q.status, "ocupado") == 0)
+                    printf("Status: ATIVA\n");
+                else
+                    printf("Status: ENCERRADA\n");
+            } else {
+                printf("Status: (erro ao buscar quarto)\n");
+            }
+
+            printf("------------------------------\n");
+        }
+    }
+
+    if (!encontrou) {
+        printf("Nenhuma estadia encontrada para esse cliente.\n");
+    }
+
+    fclose(arq);
+}
+
+
+void calcularPontosFidelidade() {
+    int opcao;
+    int idCliente = -1;
+    char nomeBuscado[50];
+
+    printf("\n--- CALCULAR PONTOS DE FIDELIDADE ---\n");
+    printf("Pesquisar por:\n");
+    printf("1 - Código do cliente\n");
+    printf("2 - Nome do cliente\n");
+    printf("Escolha: ");
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        printf("Digite o código do cliente: ");
+        scanf("%d", &idCliente);
+
+        if (!buscarClientePorId(idCliente)) {
+            printf("Cliente não encontrado.\n");
+            return;
+        }
+
+    } else if (opcao == 2) {
+        getchar(); // limpar buffer
+        printf("Digite o nome do cliente: ");
+        fgets(nomeBuscado, 50, stdin);
+        nomeBuscado[strcspn(nomeBuscado, "\n")] = '\0';
+
+        idCliente = buscarClientePorNome(nomeBuscado);
+        if (idCliente == -1) {
+            printf("Nenhum cliente com esse nome foi encontrado.\n");
+            return;
+        }
+
+    } else {
+        printf("Opção inválida.\n");
+        return;
+    }
+
+    FILE *arq = fopen(ARQ_ESTADIAS, "rb");
+    if (!arq) {
+        printf("Erro ao abrir o arquivo de estadias.\n");
+        return;
+    }
+
+    Estadia temp;
+    int totalDiarias = 0;
+
+    while (fread(&temp, sizeof(Estadia), 1, arq)) {
+        if (temp.idCliente == idCliente) {
+        totalDiarias += temp.qtdDiarias;
+        }
+    }
+
+    fclose(arq);
+
+    if (totalDiarias == 0) {
+        printf("Nenhuma estadia encontrada para esse cliente.\n");
+        return;
+    }
+
+    int pontos = totalDiarias * 10;
+
+    printf("\n==============================\n");
+    printf("   PONTOS DE FIDELIDADE\n");
+    printf("==============================\n");
+    printf("Cliente ID: %d\n", idCliente);
+    printf("Total de diárias acumuladas: %d\n", totalDiarias);
+    printf("Pontos acumulados: %d\n", pontos);
+    printf("==============================\n");
 }

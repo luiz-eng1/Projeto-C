@@ -18,6 +18,8 @@ void cadastrarQuarto();
 
 int buscarQuartoPorNumero(int numero, Quarto *q);
 
+float buscarValorDiaria(int numeroQuarto);
+
 void exibirQuarto(Quarto q);
 
 #endif

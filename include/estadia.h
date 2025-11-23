@@ -21,5 +21,7 @@ int verificarConflito(int numeroQuarto, char entrada[], char saida[]);
 void cadastrarEstadia();
 void finalizarEstadia();
 void darBaixaEstadia();
+void listarEstadiasDeUmCliente();
+void calcularPontosFidelidade();
 
 #endif 

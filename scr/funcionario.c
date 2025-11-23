@@ -75,3 +75,81 @@ void listarFuncionarios() {
 
     fclose(arq);
 }
+
+//pesquisar funcionario pelo codigo
+void pesquisarFuncionarioPorCodigo() {
+    int codigo;
+    printf("Digite o código do funcionário: ");
+    if (scanf("%d", &codigo) != 1) {
+        printf("Código inválido!\n");
+        return;
+    }
+
+    FILE *arq = fopen(ARQ_FUNCIONARIOS, "rb");
+    if (!arq) {
+        printf("Erro ao abrir o arquivo de funcionários!\n");
+        return;
+    }
+
+    Funcionario f;
+    int achou = 0;
+
+    while (fread(&f, sizeof(Funcionario), 1, arq)) {
+        if (f.idFuncionario == codigo) {
+            achou = 1;
+            printf("\n--- Funcionário Encontrado ---\n");
+            printf("ID: %d\n", f.idFuncionario);
+            printf("Nome: %s\n", f.nome);
+            printf("Cargo: %s\n", f.cargo);
+            printf("Telefone: %s\n", f.telefone);
+            printf("Salário: %.2f\n", f.salario);
+            printf("------------------------------\n");
+            break;
+        }
+    }
+
+    if (!achou) {
+        printf("Nenhum funcionário com código %d foi encontrado.\n", codigo);
+    }
+
+    fclose(arq);
+}
+
+
+//funcionario pelo nome (sttrcmp para ignorar letras maiusculas e minusculas)
+void pesquisarFuncionarioPorNome() {
+    char nomeBuscado[50];
+    getchar(); // limpar buffer para fgets
+    printf("Digite o nome do funcionário: ");
+    fgets(nomeBuscado, 50, stdin);
+    nomeBuscado[strcspn(nomeBuscado, "\n")] = '\0';
+
+    FILE *arq = fopen(ARQ_FUNCIONARIOS, "rb");
+    if (!arq) {
+        printf("Erro ao abrir o arquivo de funcionários!\n");
+        return;
+    }
+
+    Funcionario f;
+    int achou = 0;
+
+    printf("\n--- Resultados da Pesquisa ---\n");
+
+    while (fread(&f, sizeof(Funcionario), 1, arq)) {
+        if (strcasecmp(f.nome, nomeBuscado) == 0) {
+            achou = 1;
+            printf("\nID: %d\n", f.idFuncionario);
+            printf("Nome: %s\n", f.nome);
+            printf("Cargo: %s\n", f.cargo);
+            printf("Telefone: %s\n", f.telefone);
+            printf("Salário: %.2f\n", f.salario);
+            printf("---------------------------------\n");
+        }
+    }
+
+    if (!achou) {
+        printf("Nenhum funcionário com o nome \"%s\" foi encontrado.\n", nomeBuscado);
+    }
+
+    fclose(arq);
+}
