@@ -18,6 +18,10 @@ void cadastrarQuarto();
 
 int buscarQuartoPorNumero(int numero, Quarto *q);
 
+int encontrarQuartoDisponivel(int hospedes);
+
+void atualizarStatusQuarto(int numero, int desocupar);
+
 float buscarValorDiaria(int numeroQuarto);
 
 void exibirQuarto(Quarto q);

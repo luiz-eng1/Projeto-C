@@ -20,6 +20,10 @@ void cadastrarCliente();
 
 void pesquisarCliente();
 
+int buscarClientePorId(int id);
+
+int buscarClientePorNome(const char *nome);
+
 void exibirCliente(Cliente c);
 
 #endif

@@ -116,3 +116,45 @@ void exibirQuarto(Quarto q) {
     printf("Status: %s\n", q.status);
     printf("-----------------------------\n");
 }
+
+
+int encontrarQuartoDisponivel(int hospedes) {
+    FILE *arq = fopen(ARQ_QUARTOS, "rb");
+    if (!arq) return -1;
+
+    Quarto q;
+    while (fread(&q, sizeof(Quarto), 1, arq)) {
+        if (q.capacidade >= hospedes && strcmp(q.status, "desocupado") == 0) {
+            int numero = q.numero;
+            fclose(arq);
+            return numero;
+        }
+    }
+
+    fclose(arq);
+    return -1;
+}
+
+void atualizarStatusQuarto(int numero, int desocupar) {
+    FILE *arq = fopen(ARQ_QUARTOS, "r+b");
+    if (!arq) return;
+
+    Quarto q;
+    long pos = 0;
+    while (fread(&q, sizeof(Quarto), 1, arq)) {
+        if (q.numero == numero) {
+            // mover o ponteiro para a posição do registro atual
+            fseek(arq, pos * sizeof(Quarto), SEEK_SET);
+            if (desocupar)
+                strncpy(q.status, "desocupado", sizeof(q.status) - 1);
+            else
+                strncpy(q.status, "ocupado", sizeof(q.status) - 1);
+            q.status[sizeof(q.status) - 1] = '\0';
+            fwrite(&q, sizeof(Quarto), 1, arq);
+            break;
+        }
+        pos++;
+    }
+
+    fclose(arq);
+}

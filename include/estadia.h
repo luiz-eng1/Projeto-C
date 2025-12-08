@@ -4,7 +4,7 @@
 #include "../include/cliente.h"
 #include "../include/quarto.h"
 
-#define ARQ_ESTADIAS "estadias.bin"
+#define ARQ_ESTADIAS "data/estadias.bin"
 
 typedef struct{
     int idEstadia;

@@ -46,7 +46,7 @@ void cadastrarCliente() {
 }
 
 void pesquisarCliente() {
-    FILE *arquivo = fopen("clientes.dat", "rb");
+    FILE *arquivo = fopen(ARQ_CLIENTES, "rb");
     if (arquivo == NULL) {
         printf("Erro: Nenhum banco de dados de clientes encontrado ou erro na abertura.\n");
         return;
@@ -111,4 +111,38 @@ void exibirCliente(Cliente c) {
     printf("Endereco: %s\n", c.endereco);
     printf("Telefone: %s\n", c.telefone);
     printf("-----------------------------\n");
+}
+
+
+int buscarClientePorId(int id) {
+    FILE *arq = fopen(ARQ_CLIENTES, "rb");
+    if (!arq) return 0;
+
+    Cliente c;
+    while (fread(&c, sizeof(Cliente), 1, arq)) {
+        if (c.idCliente == id) {
+            fclose(arq);
+            return 1;
+        }
+    }
+
+    fclose(arq);
+    return 0;
+}
+
+int buscarClientePorNome(const char *nome) {
+    FILE *arq = fopen(ARQ_CLIENTES, "rb");
+    if (!arq) return -1;
+
+    Cliente c;
+    while (fread(&c, sizeof(Cliente), 1, arq)) {
+        if (strcmp(c.nome, nome) == 0) {
+            int id = c.idCliente;
+            fclose(arq);
+            return id;
+        }
+    }
+
+    fclose(arq);
+    return -1;
 }

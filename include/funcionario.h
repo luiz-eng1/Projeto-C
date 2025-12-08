@@ -1,7 +1,7 @@
 #ifndef FUNCIONARIO_H
 #define FUNCIONARIO_H
 
-#define ARQ_FUNCIONARIOS "funcionarios.bin"
+#define ARQ_FUNCIONARIOS "data/funcionarios.bin"
 
 typedef struct {
     int idFuncionario;

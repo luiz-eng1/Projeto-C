@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "main.h"
-
-
 #include "cliente.h"
 #include "funcionario.h"
 #include "quarto.h"
