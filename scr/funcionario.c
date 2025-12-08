@@ -32,7 +32,6 @@ void cadastrarFuncionario() {
 
     printf("\n--- Cadastro de Funcionário ---\n");
     printf("Nome: ");
-    getchar(); 
     fgets(f.nome, 50, stdin);
     f.nome[strcspn(f.nome, "\n")] = '\0';
 
@@ -119,7 +118,6 @@ void pesquisarFuncionarioPorCodigo() {
 //funcionario pelo nome (sttrcmp para ignorar letras maiusculas e minusculas)
 void pesquisarFuncionarioPorNome() {
     char nomeBuscado[50];
-    getchar(); // limpar buffer para fgets
     printf("Digite o nome do funcionário: ");
     fgets(nomeBuscado, 50, stdin);
     nomeBuscado[strcspn(nomeBuscado, "\n")] = '\0';
