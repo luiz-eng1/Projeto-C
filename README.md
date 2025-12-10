@@ -1,3 +1,4 @@
+# Link do vídeo: https://drive.google.com/file/d/1o93TKDpUmh-s7MVssXF7YFAxZ1To1XsA/view?usp=sharing
 # Sistema Hotel Descanso Garantido
 
 Sistema de gerenciamento hoteleiro desenvolvido em C para a disciplina de Algoritmos e Estruturas de Dados 1 (2025).
